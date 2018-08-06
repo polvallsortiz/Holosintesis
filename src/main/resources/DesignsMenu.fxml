@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Index">
+   <children>
+      <JFXButton id="seeDesigns" fx:id="seeDesigns" layoutX="430.0" layoutY="136.0" mnemonicParsing="false" prefHeight="86.0" prefWidth="420.0" style="-fx-background-color: #008800;" text="Veure Dissenys" textAlignment="CENTER" textFill="WHITE" />
+      <JFXButton id="uploadDesign" fx:id="uploadDesign" layoutX="430.0" layoutY="265.0" mnemonicParsing="false" prefHeight="86.0" prefWidth="420.0" style="-fx-background-color: #008800;" text="Carregar Disseny" textAlignment="CENTER" textFill="WHITE" />
+      <JFXButton id="deleteDesign" fx:id="deleteDesign" layoutX="430.0" layoutY="408.0" mnemonicParsing="false" prefHeight="86.0" prefWidth="420.0" style="-fx-background-color: #008800;" text="Eliminar Disseny" textAlignment="CENTER" textFill="WHITE" />
+   </children>
+</AnchorPane>
