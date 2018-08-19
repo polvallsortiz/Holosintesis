@@ -3,26 +3,27 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 
-public class DesignsMenu {
+public class ProductTypeMenu {
 
-    private Button seeDesigns;
-    private Button uploadDesign;
+    private Button seeProductType;
+    private Button uploadProductType;
     Button returnButton;
 
     private Stage primaryStage;
 
-    public DesignsMenu(Stage primaryStage) throws IOException {
+    public ProductTypeMenu(Stage primaryStage) throws IOException {
         this.primaryStage = primaryStage;
-        Parent root = FXMLLoader.load(getClass().getResource("/DesignsMenu.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/ProductTypeMenu.fxml"));
         primaryStage.setTitle("Menú Principal - Hidato Game");
         primaryStage.setScene(new Scene(root, 1280, 720));
         primaryStage.setResizable(false);
         primaryStage.show();
 
-        seeDesigns = (Button) primaryStage.getScene().lookup("#seeDesigns");
-        uploadDesign = (Button) primaryStage.getScene().lookup("#uploadDesign");
+        seeProductType = (Button) primaryStage.getScene().lookup("#seeProductType");
+        uploadProductType = (Button) primaryStage.getScene().lookup("#uploadProductType");
         returnButton = (Button) primaryStage.getScene().lookup("#returnButton");
 
         returnButton.setOnMouseClicked(e-> {
@@ -33,34 +34,35 @@ public class DesignsMenu {
             }
         });
 
-        seeDesigns.setOnMouseClicked(e-> {
+
+        seeProductType.setOnMouseClicked(e-> {
             try {
-                seeDesignsSelected();
+                seeProductTypeSelected();
             } catch (IOException e1) {
                 e1.printStackTrace();
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
         });
-        uploadDesign.setOnMouseClicked(e-> {
+        uploadProductType.setOnMouseClicked(e-> {
             try {
-                uploadDesignSelected();
+                uploadProductTypeSelected();
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
         });
+
     }
 
     private  void returnPressed() throws IOException {
         Index i = new Index(primaryStage);
     }
 
-    private void seeDesignsSelected() throws Exception {
-        DesignList dl = new DesignList(primaryStage);
+    private void seeProductTypeSelected() throws Exception {
+        ProductTypeList ptl = new ProductTypeList(primaryStage);
     }
 
-    private void uploadDesignSelected() throws IOException {
-        DesignUploader du = new DesignUploader(primaryStage);
+    private void uploadProductTypeSelected() throws IOException {
+        ProductTypeUploader ptu = new ProductTypeUploader(primaryStage);
     }
-
 }

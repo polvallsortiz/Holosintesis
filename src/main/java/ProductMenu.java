@@ -3,26 +3,27 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 
-public class DesignsMenu {
+public class ProductMenu {
 
-    private Button seeDesigns;
-    private Button uploadDesign;
+    private Button seeProduct;
+    private Button uploadProduct;
     Button returnButton;
 
     private Stage primaryStage;
 
-    public DesignsMenu(Stage primaryStage) throws IOException {
+    public ProductMenu(Stage primaryStage) throws IOException {
         this.primaryStage = primaryStage;
-        Parent root = FXMLLoader.load(getClass().getResource("/DesignsMenu.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/ProductsMenu.fxml"));
         primaryStage.setTitle("Menú Principal - Hidato Game");
         primaryStage.setScene(new Scene(root, 1280, 720));
         primaryStage.setResizable(false);
         primaryStage.show();
 
-        seeDesigns = (Button) primaryStage.getScene().lookup("#seeDesigns");
-        uploadDesign = (Button) primaryStage.getScene().lookup("#uploadDesign");
+        seeProduct = (Button) primaryStage.getScene().lookup("#seeProduct");
+        uploadProduct = (Button) primaryStage.getScene().lookup("#uploadProduct");
         returnButton = (Button) primaryStage.getScene().lookup("#returnButton");
 
         returnButton.setOnMouseClicked(e-> {
@@ -33,19 +34,21 @@ public class DesignsMenu {
             }
         });
 
-        seeDesigns.setOnMouseClicked(e-> {
+        seeProduct.setOnMouseClicked(e-> {
             try {
-                seeDesignsSelected();
+                seeProductSelected();
             } catch (IOException e1) {
                 e1.printStackTrace();
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
         });
-        uploadDesign.setOnMouseClicked(e-> {
+        uploadProduct.setOnMouseClicked(e-> {
             try {
-                uploadDesignSelected();
+                uploadProductSelected();
             } catch (IOException e1) {
+                e1.printStackTrace();
+            } catch (Exception e1) {
                 e1.printStackTrace();
             }
         });
@@ -55,12 +58,12 @@ public class DesignsMenu {
         Index i = new Index(primaryStage);
     }
 
-    private void seeDesignsSelected() throws Exception {
-        DesignList dl = new DesignList(primaryStage);
+    private void seeProductSelected() throws Exception {
+        ProductList pl = new ProductList(primaryStage);
     }
 
-    private void uploadDesignSelected() throws IOException {
-        DesignUploader du = new DesignUploader(primaryStage);
+    private void uploadProductSelected() throws Exception {
+        ProductUploader pu = new ProductUploader(primaryStage);
     }
 
 }

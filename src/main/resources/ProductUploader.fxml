@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Index">
+   <children>
+      <JFXButton id="returnButton" layoutX="30.0" layoutY="14.0" mnemonicParsing="false" style="-fx-background-color: #f00;" text="Enrere" textFill="WHITE" />
+      <JFXTextField id="productTitle" layoutX="192.0" layoutY="113.0" prefHeight="57.0" prefWidth="701.0" promptText="Product Title" />
+      <JFXTextField id="productDescription" layoutX="192.0" layoutY="296.0" prefHeight="57.0" prefWidth="701.0" promptText="Product Description" />
+      <JFXButton id="selectImage" layoutX="192.0" layoutY="208.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="208.0" style="-fx-background-color: #444;" text="Seleccionar Imatge" textFill="WHITE" />
+      <JFXButton id="uploadProduct" fx:id="uploadDessign" layoutX="192.0" layoutY="552.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="701.0" style="-fx-background-color: #080;" text="PENJAR PRODUCTE" textFill="WHITE" />
+      <Label layoutX="1007.0" layoutY="223.0" text="ÚLTIM TIPUS DE PRODUCTECARREGAT :" />
+      <Label id="productLabel" layoutX="1007.0" layoutY="246.0" />
+      <JFXComboBox id="designCombobox" layoutX="192.0" layoutY="412.0" prefHeight="25.0" prefWidth="701.0" promptText="Disseny" />
+      <JFXComboBox id="productTypeCombobox" layoutX="192.0" layoutY="484.0" prefHeight="25.0" prefWidth="701.0" promptText="Tipus de producte" />
+   </children>
+</AnchorPane>
