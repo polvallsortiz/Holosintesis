@@ -6,11 +6,11 @@ import com.jfoenix.controls.JFXTabPane;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import sun.security.krb5.internal.crypto.Des;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Optional;
 
 public class DesignList {
 
@@ -46,6 +47,48 @@ public class DesignList {
                 e1.printStackTrace();
             }
         });
+        table.setOnMouseClicked( event -> {
+            Design design = (Design) table.getSelectionModel().getSelectedItem();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Esteu segurs?");
+            alert.setHeaderText("Esteu segurs que voleu esborrar el disseny amb títol" + design.getTitle_design());
+            alert.setResizable(false);
+            alert.setContentText("Seleccioneu la opció");
+            alert.showAndWait();
+            Optional<ButtonType> result = alert.showAndWait();
+            if(result.get() == ButtonType.OK) {
+                try {
+                    deleteDesign(design);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void deleteDesign(Design design) throws Exception {
+        String design_title = design.getTitle_design();
+        String def = "";
+        for(int i = 0; i < design_title.length(); ++i) {
+            char c = design_title.charAt(i);
+            if(design_title.charAt(i) == ' ') def += "%20";
+            else def += design_title.charAt(i);
+        }
+        String url = "http://holosintesis.ddns.net:3000/design" + "?title_design=eq." + def;
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+        con.setRequestMethod("DELETE");
+        con.setRequestProperty("User-Agent", "Mozilla/5.0");
+
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending a 'DELETE' request to url : "+ url);
+        System.out.println("Response code : " + responseCode);
+        table.getItems().clear();
+        getDesigns();
+        fillTable();
     }
 
     private  void returnPressed() throws IOException {

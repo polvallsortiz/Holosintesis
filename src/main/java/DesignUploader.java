@@ -1,16 +1,25 @@
+import com.google.gson.Gson;
 import com.jcraft.jsch.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.soap.Text;
 import java.awt.*;
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Vector;
 
 public class DesignUploader extends Component {
@@ -21,6 +30,9 @@ public class DesignUploader extends Component {
     private Button selectImage;
     private TextField designDescription;
     private TextField designPatologies;
+    private File designImage;
+    private Button uploadDessign;
+    private Label designLabel;
     Button returnButton;
 
     public DesignUploader(Stage primaryStage) throws IOException {
@@ -36,13 +48,18 @@ public class DesignUploader extends Component {
         designDescription = (TextField) primaryStage.getScene().lookup("#designDescription");
         designPatologies = (TextField) primaryStage.getScene().lookup("#designPatologies");
         returnButton = (Button) primaryStage.getScene().lookup("#returnButton");
+        uploadDessign = (Button) primaryStage.getScene().lookup("#uploadDessign");
+        designLabel = (javafx.scene.control.Label) primaryStage.getScene().lookup("#designLabel");
 
         selectImage.setOnMouseClicked(e -> {
+            getImage();
+        });
+        uploadDessign.setOnMouseClicked(e-> {
             try {
-                getImage();
-            } catch (JSchException e1) {
-                e1.printStackTrace();
+                pushDesign();
             } catch (IOException e1) {
+                e1.printStackTrace();
+            } catch (JSchException e1) {
                 e1.printStackTrace();
             }
         });
@@ -59,7 +76,7 @@ public class DesignUploader extends Component {
         DesignsMenu dm = new DesignsMenu(primaryStage);
     }
 
-    private void getImage() throws JSchException, IOException {
+    private void getImage() {
         JFileChooser fc = new JFileChooser();
         fc.setCurrentDirectory(new File(System.getProperty("user.home")));
         int result = fc.showOpenDialog(this);
@@ -67,83 +84,137 @@ public class DesignUploader extends Component {
         if (result == JFileChooser.APPROVE_OPTION) {
             selectedFile = fc.getSelectedFile();
             System.out.println("Selected file: " + selectedFile.getAbsolutePath());
-            String user = "holosintesisserver";
-            String host = "holosintesis.ddns.net";
-            String rfile = "/var/www/html/DataBase/Design/" + selectedFile.getName();
+            designImage = fc.getSelectedFile();
+        }
+    }
 
-            FileInputStream fis=null;
+    private void pushDesign() throws IOException, JSchException {
+       // if(!designTitle.getText().isEmpty() && !designDescription.getText().isEmpty() && !designPatologies.getText().isEmpty() && designImage == null) {
+            pushImage();
+            String title = designTitle.getText();
+            String description = designDescription.getText();
+            String patologiesList = designPatologies.getText();
+            String imageURL = "http://holosintesis.ddns.net/DataBase/Design/" + designImage.getName();
 
-            JSch jsch = new JSch();
-            Session session = jsch.getSession(user, host, 22);
+            Map<String,Object> params = new LinkedHashMap<>();
+            params.put("title_design",title);
+            params.put("image_design",imageURL);
+            params.put("description_design",description);
+            params.put("patologies",patologiesList);
 
-            UserInfo ui = new MyUserInfo();
-            session.setUserInfo(ui);
-            session.connect();
 
-            boolean ptimestamp = true;
+            StringBuilder tokenUri=new StringBuilder("title_design=");
+            tokenUri.append(URLEncoder.encode(title,"UTF-8"));
+            tokenUri.append("&image_design=");
+            tokenUri.append(URLEncoder.encode(imageURL,"UTF-8"));
+            tokenUri.append("&description_design=");
+            tokenUri.append(URLEncoder.encode(description,"UTF-8"));
+            tokenUri.append("&patologies=");
+            tokenUri.append(URLEncoder.encode(patologiesList,"UTF-8"));
 
-            // exec 'scp -t rfile' remotely
-            String command = "scp " + (ptimestamp ? "-p" : "") + " -t " + rfile;
-            Channel channel = session.openChannel("exec");
-            ((ChannelExec) channel).setCommand(command);
+            String url = "http://holosintesis.ddns.net:3000/design";
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
-            // get I/O streams for remote scp
-            OutputStream out = channel.getOutputStream();
-            InputStream in = channel.getInputStream();
-
-            channel.connect();
-
-            if (checkAck(in) != 0) {
-                System.exit(0);
+            byte[] postDataBytes = tokenUri.toString().getBytes("UTF-8");
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            con.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+            con.setDoOutput(true);
+            con.getOutputStream().write(postDataBytes);
+            Reader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
+            StringBuilder data = new StringBuilder();
+            for (int c; (c = in.read()) >= 0;) {
+                data.append((char)c);
             }
+            String intentData = data.toString();
+            System.out.println(intentData);
 
-            if (ptimestamp) {
-                command = "T " + (selectedFile.lastModified() / 1000) + " 0";
-                // The access time should be sent here,
-                // but it is not accessible with JavaAPI ;-<
-                command += (" " + (selectedFile.lastModified() / 1000) + " 0\n");
-                out.write(command.getBytes());
-                out.flush();
-                if (checkAck(in) != 0) {
-                    System.exit(0);
-                }
-            }
+            designLabel.setText(title);
 
-            // send "C0644 filesize filename", where filename should not include '/'
-            long filesize = selectedFile.length();
-            command = "C0644 " + filesize + " ";
-            command += selectedFile;
-            command += "\n";
+        /*}
+        else {
+            JOptionPane.showMessageDialog(null, "No poden ser buits", "Error de paràmetres", JOptionPane.PLAIN_MESSAGE);
+        }*/
+    }
+
+    private  void pushImage() throws JSchException, IOException {
+        File selectedFile = designImage;
+        String user = "holosintesisserver";
+        String host = "holosintesis.ddns.net";
+        String rfile = "/var/www/html/DataBase/Design/" + selectedFile.getName();
+
+        FileInputStream fis=null;
+
+        JSch jsch = new JSch();
+        Session session = jsch.getSession(user, host, 22);
+
+        UserInfo ui = new MyUserInfo();
+        session.setUserInfo(ui);
+        session.connect();
+
+        boolean ptimestamp = true;
+
+        // exec 'scp -t rfile' remotely
+        String command = "scp " + (ptimestamp ? "-p" : "") + " -t " + rfile;
+        Channel channel = session.openChannel("exec");
+        ((ChannelExec) channel).setCommand(command);
+
+        // get I/O streams for remote scp
+        OutputStream out = channel.getOutputStream();
+        InputStream in = channel.getInputStream();
+
+        channel.connect();
+
+        if (checkAck(in) != 0) {
+            System.exit(0);
+        }
+
+        if (ptimestamp) {
+            command = "T" + (selectedFile.lastModified() / 1000) + " 0";
+            // The access time should be sent here,
+            // but it is not accessible with JavaAPI ;-<
+            command += (" " + (selectedFile.lastModified() / 1000) + " 0\n");
             out.write(command.getBytes());
             out.flush();
             if (checkAck(in) != 0) {
                 System.exit(0);
             }
+        }
 
-            // send a content of lfile
-            fis = new FileInputStream(selectedFile);
-            byte[] buf = new byte[1024];
-            while (true) {
-                int len = fis.read(buf, 0, buf.length);
-                if (len <= 0) break;
-                out.write(buf, 0, len); //out.flush();
-            }
-            fis.close();
-            fis = null;
-            // send '\0'
-            buf[0] = 0;
-            out.write(buf, 0, 1);
-            out.flush();
-            if (checkAck(in) != 0) {
-                System.exit(0);
-            }
-            out.close();
-
-            channel.disconnect();
-            session.disconnect();
-
+        // send "C0644 filesize filename", where filename should not include '/'
+        long filesize = selectedFile.length();
+        command = "C0644 " + filesize + " ";
+        command += selectedFile;
+        command += "\n";
+        out.write(command.getBytes());
+        out.flush();
+        if (checkAck(in) != 0) {
             System.exit(0);
         }
+
+        // send a content of lfile
+        fis = new FileInputStream(selectedFile);
+        byte[] buf = new byte[1024];
+        while (true) {
+            int len = fis.read(buf, 0, buf.length);
+            if (len <= 0) break;
+            out.write(buf, 0, len); //out.flush();
+        }
+        fis.close();
+        fis = null;
+        // send '\0'
+        buf[0] = 0;
+        out.write(buf, 0, 1);
+        out.flush();
+        if (checkAck(in) != 0) {
+            System.exit(0);
+        }
+        out.close();
+
+        channel.disconnect();
+        session.disconnect();
+
     }
 
     static int checkAck(InputStream in) throws IOException {
