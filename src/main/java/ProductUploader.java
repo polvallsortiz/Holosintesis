@@ -8,7 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import sun.security.krb5.internal.crypto.Des;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,7 +37,7 @@ public class ProductUploader extends Component {
     public ProductUploader(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("/ProductUploader.fxml"));
-        primaryStage.setTitle("Menú Principal - Hidato Game");
+        primaryStage.setTitle("Holosintesis Uploader");
         primaryStage.setScene(new Scene(root, 1280, 720));
         primaryStage.setResizable(false);
         primaryStage.show();

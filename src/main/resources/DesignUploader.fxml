@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -15,5 +16,6 @@
       <JFXButton id="uploadDessign" fx:id="uploadDessign" layoutX="192.0" layoutY="552.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="701.0" style="-fx-background-color: #080;" text="PENJAR DISSENY" textFill="WHITE" />
       <Label layoutX="1007.0" layoutY="223.0" text="ÚLTIM DISSENY CARREGAT :" />
       <Label id="designLabel" layoutX="1007.0" layoutY="246.0" text="DISSENY" />
+      <JFXComboBox id="familyCombo" layoutX="192.0" layoutY="134.0" prefHeight="25.0" prefWidth="701.0" promptText="Família" />
    </children>
 </AnchorPane>

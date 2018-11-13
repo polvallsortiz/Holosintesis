@@ -24,7 +24,7 @@ public class ProductList {
     public ProductList(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("/ProductList.fxml"));
-        primaryStage.setTitle("Menú Principal - Hidato Game");
+        primaryStage.setTitle("Holosintesis Uploader");
         primaryStage.setScene(new Scene(root, 1280, 720));
         primaryStage.setResizable(false);
         primaryStage.show();
@@ -97,7 +97,7 @@ public class ProductList {
         image_product.setCellValueFactory(new PropertyValueFactory<>("image_product"));
         image_product.setPrefWidth(400);
         TableColumn description_product = new TableColumn("Descripció");
-        description_product.setCellValueFactory(new PropertyValueFactory<>("title_design"));
+        description_product.setCellValueFactory(new PropertyValueFactory<>("description_product"));
         description_product.setPrefWidth(200);
         TableColumn title_design = new TableColumn("Nom disseny");
         title_design.setCellValueFactory(new PropertyValueFactory<>("title_design"));

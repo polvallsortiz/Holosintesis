@@ -6,24 +6,24 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class ProductTypeMenu {
+public class FamiliesMenu {
 
-    private Button seeProductType;
-    private Button uploadProductType;
+    private Button seeFamilies;
+    private Button uploadFamilia;
     Button returnButton;
 
     private Stage primaryStage;
 
-    public ProductTypeMenu(Stage primaryStage) throws IOException {
+    public FamiliesMenu(Stage primaryStage) throws IOException {
         this.primaryStage = primaryStage;
-        Parent root = FXMLLoader.load(getClass().getResource("/ProductTypeMenu.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/FamiliesMenu.fxml"));
         primaryStage.setTitle("Holosintesis Uploader");
         primaryStage.setScene(new Scene(root, 1280, 720));
         primaryStage.setResizable(false);
         primaryStage.show();
 
-        seeProductType = (Button) primaryStage.getScene().lookup("#seeProductType");
-        uploadProductType = (Button) primaryStage.getScene().lookup("#uploadProductType");
+        seeFamilies = (Button) primaryStage.getScene().lookup("#seeFamilies");
+        uploadFamilia = (Button) primaryStage.getScene().lookup("#uploadFamilia");
         returnButton = (Button) primaryStage.getScene().lookup("#returnButton");
 
         returnButton.setOnMouseClicked(e-> {
@@ -34,35 +34,34 @@ public class ProductTypeMenu {
             }
         });
 
-
-        seeProductType.setOnMouseClicked(e-> {
+        seeFamilies.setOnMouseClicked(e-> {
             try {
-                seeProductTypeSelected();
+                seeFamiliesSelected();
             } catch (IOException e1) {
                 e1.printStackTrace();
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
         });
-        uploadProductType.setOnMouseClicked(e-> {
+        uploadFamilia.setOnMouseClicked(e-> {
             try {
-                uploadProductTypeSelected();
+                uploadFamiliaSelected();
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
         });
-
     }
 
     private  void returnPressed() throws IOException {
         Index i = new Index(primaryStage);
     }
 
-    private void seeProductTypeSelected() throws Exception {
-        ProductTypeList ptl = new ProductTypeList(primaryStage);
+    private void seeFamiliesSelected() throws Exception {
+        FamiliesList fl = new FamiliesList(primaryStage);
     }
 
-    private void uploadProductTypeSelected() throws IOException {
-        ProductTypeUploader ptu = new ProductTypeUploader(primaryStage);
+    private void uploadFamiliaSelected() throws IOException {
+        FamiliaUploader fu = new FamiliaUploader(primaryStage);
     }
+
 }

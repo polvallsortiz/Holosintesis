@@ -31,7 +31,7 @@ public class ProductTypeUploader extends Component {
     public ProductTypeUploader(Stage primaryStage) throws IOException {
         this.primaryStage = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("/ProductTypeUploader.fxml"));
-        primaryStage.setTitle("Menú Principal - Hidato Game");
+        primaryStage.setTitle("Holosintesis Uploader");
         primaryStage.setScene(new Scene(root, 1280, 720));
         primaryStage.setResizable(false);
         primaryStage.show();

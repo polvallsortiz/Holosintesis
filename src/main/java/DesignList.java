@@ -1,8 +1,4 @@
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.jfoenix.controls.JFXTabPane;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -10,9 +6,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import sun.security.krb5.internal.crypto.Des;
 
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -31,7 +25,7 @@ public class DesignList {
     public DesignList(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("/DesignList.fxml"));
-        primaryStage.setTitle("Menú Principal - Hidato Game");
+        primaryStage.setTitle("Holosintesis Uploader");
         primaryStage.setScene(new Scene(root, 1280, 720));
         primaryStage.setResizable(false);
         primaryStage.show();
@@ -108,8 +102,10 @@ public class DesignList {
         description_design.setPrefWidth(200);
         TableColumn patologies = new TableColumn("Patologies");
         patologies.setCellValueFactory(new PropertyValueFactory<>("patologies"));
-        patologies.setPrefWidth(400);
-        table.getColumns().addAll(title_design,image_design,description_design,patologies);
+        patologies.setPrefWidth(200);
+        TableColumn title_family = new TableColumn("Família");
+        title_family.setPrefWidth(200);
+        table.getColumns().addAll(title_design,image_design,description_design,patologies,title_family);
         for(Design design : designs) {
             table.getItems().add(design);
         }

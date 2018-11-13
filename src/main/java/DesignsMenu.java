@@ -16,7 +16,7 @@ public class DesignsMenu {
     public DesignsMenu(Stage primaryStage) throws IOException {
         this.primaryStage = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("/DesignsMenu.fxml"));
-        primaryStage.setTitle("Menú Principal - Hidato Game");
+        primaryStage.setTitle("Holosintesis Uploader");
         primaryStage.setScene(new Scene(root, 1280, 720));
         primaryStage.setResizable(false);
         primaryStage.show();
@@ -47,6 +47,8 @@ public class DesignsMenu {
                 uploadDesignSelected();
             } catch (IOException e1) {
                 e1.printStackTrace();
+            } catch (Exception e1) {
+                e1.printStackTrace();
             }
         });
     }
@@ -59,7 +61,7 @@ public class DesignsMenu {
         DesignList dl = new DesignList(primaryStage);
     }
 
-    private void uploadDesignSelected() throws IOException {
+    private void uploadDesignSelected() throws Exception {
         DesignUploader du = new DesignUploader(primaryStage);
     }
 

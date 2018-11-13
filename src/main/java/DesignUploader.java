@@ -1,5 +1,6 @@
 import com.google.gson.Gson;
 import com.jcraft.jsch.*;
+import com.jfoenix.controls.JFXComboBox;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -24,6 +25,7 @@ import java.util.Vector;
 
 public class DesignUploader extends Component {
 
+    private Familia[] families;
 
     private Stage primaryStage;
     private TextField designTitle;
@@ -33,12 +35,13 @@ public class DesignUploader extends Component {
     private File designImage;
     private Button uploadDessign;
     private Label designLabel;
+    private JFXComboBox familyCombo;
     Button returnButton;
 
-    public DesignUploader(Stage primaryStage) throws IOException {
+    public DesignUploader(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("/DesignUploader.fxml"));
-        primaryStage.setTitle("Menú Principal - Hidato Game");
+        primaryStage.setTitle("Holosintesis Uploader");
         primaryStage.setScene(new Scene(root, 1280, 720));
         primaryStage.setResizable(false);
         primaryStage.show();
@@ -50,6 +53,9 @@ public class DesignUploader extends Component {
         returnButton = (Button) primaryStage.getScene().lookup("#returnButton");
         uploadDessign = (Button) primaryStage.getScene().lookup("#uploadDessign");
         designLabel = (javafx.scene.control.Label) primaryStage.getScene().lookup("#designLabel");
+        familyCombo = (JFXComboBox) primaryStage.getScene().lookup("#familyCombo");
+
+        getFamilies();
 
         selectImage.setOnMouseClicked(e -> {
             getImage();
@@ -70,6 +76,10 @@ public class DesignUploader extends Component {
                 e1.printStackTrace();
             }
         });
+        for(Familia familia : families) {
+            familyCombo.getItems().add(familia.getTitle_family());
+        }
+
     }
 
     private void returnPressed() throws IOException {
@@ -88,6 +98,34 @@ public class DesignUploader extends Component {
         }
     }
 
+    private void getFamilies() throws Exception {
+        String url = "http://holosintesis.ddns.net:3000/family";
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+        con.setRequestMethod("GET");
+        con.setRequestProperty("User-Agent", "Mozilla/5.0");
+
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending a 'GET' request to url : " + url);
+        System.out.println("Response code : " + responseCode);
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        //print result
+        System.out.println(response.toString());
+        Familia[] families = new Gson().fromJson(response.toString(), Familia[].class);
+        this.families = families;
+    }
+
     private void pushDesign() throws IOException, JSchException {
        // if(!designTitle.getText().isEmpty() && !designDescription.getText().isEmpty() && !designPatologies.getText().isEmpty() && designImage == null) {
             pushImage();
@@ -95,12 +133,15 @@ public class DesignUploader extends Component {
             String description = designDescription.getText();
             String patologiesList = designPatologies.getText();
             String imageURL = "http://holosintesis.ddns.net/DataBase/Design/" + designImage.getName();
+            String family_title = familyCombo.getSelectionModel().getSelectedItem().toString();
 
-            Map<String,Object> params = new LinkedHashMap<>();
+
+        Map<String,Object> params = new LinkedHashMap<>();
             params.put("title_design",title);
             params.put("image_design",imageURL);
             params.put("description_design",description);
             params.put("patologies",patologiesList);
+            params.put("family_title",family_title);
 
 
             StringBuilder tokenUri=new StringBuilder("title_design=");
@@ -111,6 +152,8 @@ public class DesignUploader extends Component {
             tokenUri.append(URLEncoder.encode(description,"UTF-8"));
             tokenUri.append("&patologies=");
             tokenUri.append(URLEncoder.encode(patologiesList,"UTF-8"));
+            tokenUri.append("&title_family=");
+            tokenUri.append(URLEncoder.encode(family_title,"UTF-8"));
 
             String url = "http://holosintesis.ddns.net:3000/design";
             URL obj = new URL(url);

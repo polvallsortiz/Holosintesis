@@ -13,17 +13,17 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Optional;
 
-public class ProductTypeList {
+public class FamiliesList {
 
-    ProductType[] productTypes;
+    Familia[] families;
     TableView table;
     Button returnButton;
 
     Stage primaryStage;
 
-    public ProductTypeList(Stage primaryStage) throws Exception {
+    public FamiliesList(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
-        Parent root = FXMLLoader.load(getClass().getResource("/ProductTypeList.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/FamiliesList.fxml"));
         primaryStage.setTitle("Holosintesis Uploader");
         primaryStage.setScene(new Scene(root, 1280, 720));
         primaryStage.setResizable(false);
@@ -31,7 +31,7 @@ public class ProductTypeList {
 
         table = (TableView) primaryStage.getScene().lookup("#table");
         returnButton = (Button) primaryStage.getScene().lookup("#returnButton");
-        getProductType();
+        getFamilies();
         fillTable();
         returnButton.setOnMouseClicked(e-> {
             try {
@@ -41,17 +41,17 @@ public class ProductTypeList {
             }
         });
         table.setOnMouseClicked( event -> {
-            ProductType productType = (ProductType) table.getSelectionModel().getSelectedItem();
+            Familia familia = (Familia) table.getSelectionModel().getSelectedItem();
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Esteu segurs?");
-            alert.setHeaderText("Esteu segurs que voleu esborrar el disseny amb títol" + productType.getTitle_producttype());
+            alert.setHeaderText("Esteu segurs que voleu esborrar la família amb títol" + familia.getTitle_family());
             alert.setResizable(false);
             alert.setContentText("Seleccioneu la opció");
             alert.showAndWait();
             Optional<ButtonType> result = alert.showAndWait();
             if(result.get() == ButtonType.OK) {
                 try {
-                    deleteProductType(productType);
+                    deleteFamilia(familia);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (Exception e) {
@@ -61,15 +61,15 @@ public class ProductTypeList {
         });
     }
 
-    private void deleteProductType(ProductType productType) throws Exception {
-        String productType_title = productType.getTitle_producttype();
+    private void deleteFamilia(Familia familia) throws Exception {
+        String design_title = familia.getTitle_family();
         String def = "";
-        for(int i = 0; i < productType_title.length(); ++i) {
-            char c = productType_title.charAt(i);
-            if(c == ' ') def += "%20";
-            else def += c;
+        for(int i = 0; i < design_title.length(); ++i) {
+            char c = design_title.charAt(i);
+            if(design_title.charAt(i) == ' ') def += "%20";
+            else def += design_title.charAt(i);
         }
-        String url = "http://holosintesis.ddns.net:3000/producttype" + "?title_producttype=eq." + def;
+        String url = "http://holosintesis.ddns.net:3000/familia" + "?title_family=eq." + def;
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
@@ -80,33 +80,30 @@ public class ProductTypeList {
         System.out.println("\nSending a 'DELETE' request to url : "+ url);
         System.out.println("Response code : " + responseCode);
         table.getItems().clear();
-        getProductType();
+        getFamilies();
         fillTable();
     }
 
     private  void returnPressed() throws IOException {
-        ProductTypeMenu ptm = new ProductTypeMenu(primaryStage);
+        FamiliesMenu fm = new FamiliesMenu(primaryStage);
     }
 
     private void fillTable() {
         table.setEditable(false);
-        TableColumn title_producttype = new TableColumn("Nom tipus");
-        title_producttype.setCellValueFactory(new PropertyValueFactory<>("title_producttype"));
-        title_producttype.setPrefWidth(200);
-        TableColumn image_producttype = new TableColumn("Enllaç Imatge");
-        image_producttype.setCellValueFactory(new PropertyValueFactory<>("image_producttype"));
-        image_producttype.setPrefWidth(400);
-        TableColumn description_producttype = new TableColumn("Descripció");
-        description_producttype.setCellValueFactory(new PropertyValueFactory<>("description_producttype"));
-        description_producttype.setPrefWidth(200);
-        table.getColumns().addAll(title_producttype,image_producttype,description_producttype);
-        for(ProductType productType : productTypes) {
-            table.getItems().add(productType);
+        TableColumn title_family = new TableColumn("Nom Família");
+        title_family.setCellValueFactory(new PropertyValueFactory<>("title_family"));
+        title_family.setPrefWidth(200);
+        TableColumn description_family = new TableColumn("Descripció");
+        description_family.setCellValueFactory(new PropertyValueFactory<>("description_family"));
+        description_family.setPrefWidth(600);
+        table.getColumns().addAll(title_family,description_family);
+        for(Familia familia : families) {
+            table.getItems().add(familia);
         }
     }
 
-    private void getProductType() throws Exception {
-        String url = "http://holosintesis.ddns.net:3000/producttype";
+    private void getFamilies() throws Exception {
+        String url = "http://holosintesis.ddns.net:3000/family";
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
@@ -117,8 +114,7 @@ public class ProductTypeList {
         System.out.println("\nSending a 'GET' request to url : "+ url);
         System.out.println("Response code : " + responseCode);
 
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(con.getInputStream()));
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
         String inputLine;
         StringBuffer response = new StringBuffer();
 
@@ -129,7 +125,7 @@ public class ProductTypeList {
 
         //print result
         System.out.println(response.toString());
-        ProductType[] productTypes = new Gson().fromJson(response.toString(), ProductType[].class);
-        this.productTypes = productTypes;
+        Familia[] families = new Gson().fromJson(response.toString(), Familia[].class);
+        this.families = families;
     }
 }

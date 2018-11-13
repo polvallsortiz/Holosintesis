@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Index">
+   <children>
+      <JFXButton id="seeFamilies" fx:id="seeDesigns" layoutX="430.0" layoutY="241.0" mnemonicParsing="false" prefHeight="86.0" prefWidth="420.0" style="-fx-background-color: #008800;" text="Veure Famílies" textAlignment="CENTER" textFill="WHITE" />
+      <JFXButton id="uploadFamilia" fx:id="uploadDesign" layoutX="430.0" layoutY="376.0" mnemonicParsing="false" prefHeight="86.0" prefWidth="420.0" style="-fx-background-color: #008800;" text="Carregar Família" textAlignment="CENTER" textFill="WHITE" />
+      <JFXButton id="returnButton" layoutX="50.0" layoutY="34.0" mnemonicParsing="false" style="-fx-background-color: #f00;" text="Enrere" textFill="WHITE" />
+   </children>
+</AnchorPane>

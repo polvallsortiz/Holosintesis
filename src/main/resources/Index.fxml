@@ -5,8 +5,9 @@
 
 <AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Index">
    <children>
-      <JFXButton id="designsButton" fx:id="designsButton" layoutX="430.0" layoutY="136.0" mnemonicParsing="false" prefHeight="86.0" prefWidth="420.0" style="-fx-background-color: #008800;" text="Dissenys" textAlignment="CENTER" textFill="WHITE" />
-      <JFXButton id="productTypeButton" fx:id="productTypeButton" layoutX="430.0" layoutY="265.0" mnemonicParsing="false" prefHeight="86.0" prefWidth="420.0" style="-fx-background-color: #008800;" text="Tipus Productes" textAlignment="CENTER" textFill="WHITE" />
-      <JFXButton id="productsButton" fx:id="productsButton" layoutX="430.0" layoutY="408.0" mnemonicParsing="false" prefHeight="86.0" prefWidth="420.0" style="-fx-background-color: #008800;" text="Productes" textAlignment="CENTER" textFill="WHITE" />
+      <JFXButton id="designsButton" fx:id="designsButton" layoutX="430.0" layoutY="200.0" mnemonicParsing="false" prefHeight="86.0" prefWidth="420.0" style="-fx-background-color: #008800;" text="Dissenys" textAlignment="CENTER" textFill="WHITE" />
+      <JFXButton id="productTypeButton" fx:id="productTypeButton" layoutX="430.0" layoutY="350.0" mnemonicParsing="false" prefHeight="86.0" prefWidth="420.0" style="-fx-background-color: #008800;" text="Tipus Productes" textAlignment="CENTER" textFill="WHITE" />
+      <JFXButton id="productsButton" fx:id="productsButton" layoutX="430.0" layoutY="500.0" mnemonicParsing="false" prefHeight="86.0" prefWidth="420.0" style="-fx-background-color: #008800;" text="Productes" textAlignment="CENTER" textFill="WHITE" />
+      <JFXButton id="familiesButton" fx:id="designsButton1" layoutX="430.0" layoutY="50.0" mnemonicParsing="false" prefHeight="86.0" prefWidth="420.0" style="-fx-background-color: #008800;" text="Famílies" textAlignment="CENTER" textFill="WHITE" />
    </children>
 </AnchorPane>

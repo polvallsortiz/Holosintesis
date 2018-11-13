@@ -16,6 +16,5 @@
       <Label layoutX="1007.0" layoutY="223.0" text="ÚLTIM TIPUS DE PRODUCTECARREGAT :" />
       <Label id="productLabel" layoutX="1007.0" layoutY="246.0" />
       <JFXComboBox id="designCombobox" layoutX="192.0" layoutY="412.0" prefHeight="25.0" prefWidth="701.0" promptText="Disseny" />
-      <JFXComboBox id="productTypeCombobox" layoutX="192.0" layoutY="484.0" prefHeight="25.0" prefWidth="701.0" promptText="Tipus de producte" />
    </children>
 </AnchorPane>
