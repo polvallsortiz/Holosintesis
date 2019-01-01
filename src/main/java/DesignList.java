@@ -104,6 +104,7 @@ public class DesignList {
         patologies.setCellValueFactory(new PropertyValueFactory<>("patologies"));
         patologies.setPrefWidth(200);
         TableColumn title_family = new TableColumn("Família");
+        title_family.setCellValueFactory(new PropertyValueFactory<>("title_family"));
         title_family.setPrefWidth(200);
         table.getColumns().addAll(title_design,image_design,description_design,patologies,title_family);
         for(Design design : designs) {
